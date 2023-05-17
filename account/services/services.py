@@ -1,7 +1,9 @@
 from appwrite.client import Client
+from appwrite.exception import AppwriteException
 from appwrite.id import ID
 from appwrite.services.users import Users
 from django.conf import settings
+from utils.exceptions import RegisterUserException
 
 client = (
     Client()
@@ -27,9 +29,9 @@ class RegisterUserService:
                 name=user_data.get("name"),
             )
             print(f"Result response {result}")
-        except Exception as err:
+        except AppwriteException as err:
             print(f"Error creating user in appwrite {str(err)}")
-            return False, str(err)
+            raise RegisterUserException(str(err))
         return result
 
     def create_super_user():
